@@ -2,63 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Interfaces\Interfaces\NotificationInterface;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private NotificationInterface $notificationInterface;
+
+    public function __construct(NotificationInterface $notificationInterface)
     {
-        //
+        $this->notificationInterface = $notificationInterface;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function index(Request $request)
+    {
+        return $this->notificationInterface->index($request);
+    }
+
     public function create()
     {
-        //
+        return ApiResponse::sendErrors("There is no view on api", code: 404);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        return $this->notificationInterface->store($request);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(string $uuid)
     {
-        //
+        return $this->notificationInterface->show($uuid);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function search(Request $request)
     {
-        //
+        return $this->notificationInterface->search($request);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function edit()
     {
-        //
+        return ApiResponse::sendErrors("There is no view on api", code: 404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function update(Request $request, string $uuid)
     {
-        //
+        return $this->notificationInterface->update($request, $uuid);
     }
 }

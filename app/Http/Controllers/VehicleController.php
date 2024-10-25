@@ -2,63 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Interfaces\Interfaces\VehicleInterface;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    private VehicleInterface $vehicleInterface;
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function __construct(VehicleInterface $vehicleInterface)
     {
-        //
+        $this->vehicleInterface = $vehicleInterface;
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        return $this->vehicleInterface->store($request);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(string $uuid)
     {
-        //
+        return $this->vehicleInterface->show($uuid);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function search(Request $request)
     {
-        //
+        return $this->vehicleInterface->search($request);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $uuid)
     {
-        //
+        return $this->vehicleInterface->update($request, $uuid);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(string $uuid)
     {
-        //
+        return $this->vehicleInterface->destroy($uuid);
     }
+
 }

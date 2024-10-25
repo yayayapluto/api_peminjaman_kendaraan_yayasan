@@ -12,7 +12,7 @@ class ApiResponse
         //
     }
 
-    public static function sendSuccess(string $msg = "Success", array $data = [], $code = 200)
+    public static function sendSuccess(string $msg = "Success", $data = null, $code = 200)
     {
         return response()->json([
             "success" => true,
@@ -21,7 +21,7 @@ class ApiResponse
         ], $code);
     }
 
-    public static function sendErrors(string $msg = "Errors", array $errors = [], $code = 500)
+    public static function sendErrors(string $msg = "Errors", $errors = null, $code = 500)
     {
         return response()->json([
             "success" => false,

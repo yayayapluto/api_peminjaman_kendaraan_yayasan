@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\ResourceInterface;
+use App\Interfaces\UserInterface;
 use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
@@ -11,11 +12,32 @@ use App\Helpers\ApiResponse;
 use App\Http\Resources\MakeResource;
 use Illuminate\Validation\ValidationException;
 
-class UserRepository implements ResourceInterface
+class UserRepository implements UserInterface
 {
     public function __construct()
     {
         //
+    }
+
+    public function login(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('name', $validatedData['name'])->first();
+
+        if (!$user || !Hash::check($validatedData['password'], $user->password)) {
+            return ApiResponse::sendErrors("Invalid credentials", [], 401);
+        }
+
+        $token = $user->createToken('API Token')->plainTextToken;
+
+        return ApiResponse::sendSuccess("Login successful", [
+            'token' => $token,
+            'user' => new MakeResource($user)
+        ]);
     }
 
     public function index(Request $request)

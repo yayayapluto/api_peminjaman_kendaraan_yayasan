@@ -2,26 +2,35 @@
 
 namespace App\Http\Middleware;
 
-use App\ApiResponse;
+use App\Helpers\ApiResponse;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class CheckToken
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();
 
         if (!$token) {
-            return \App\Helpers\ApiResponse::sendErrors("Cannot find bearer token");
+            return ApiResponse::sendErrors("Cannot find bearer token", code: 400);
         }
-        
+
+        $tokenRecord = PersonalAccessToken::findToken($token);
+
+        if (!$tokenRecord) {
+            return ApiResponse::sendErrors("Invalid token", code: 401);
+        }
+
+        $user = $tokenRecord->tokenable;
+
+        if (!$user->is_enable) {
+            return ApiResponse::sendErrors("User account is inactive", code: 403);
+        }
+
+        $request->attributes->set('user', $user);
 
         return $next($request);
     }

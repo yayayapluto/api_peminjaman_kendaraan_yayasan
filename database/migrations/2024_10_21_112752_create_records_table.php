@@ -31,10 +31,6 @@ return new class extends Migration
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
-
-            // $table->foreign('id_vehicle')->references('id')->on('vehicles')->onDelete('cascade')->name('fk_bookings_id_vehicle');
-            // $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->name('fk_bookings_id_user');
-            // $table->foreign('id_driver')->references('id')->on('users')->onDelete('cascade')->name('fk_bookings_id_driver');
         });
     }
 

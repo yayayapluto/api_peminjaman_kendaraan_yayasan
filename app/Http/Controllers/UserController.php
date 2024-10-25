@@ -3,22 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
-use App\Interfaces\ResourceInterface;
+use App\Interfaces\UserInterface;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    private ResourceInterface $resourceInterface;
+    private UserInterface $userInterface;
 
-    public function __construct(ResourceInterface $resourceInterface) {
-        $this->resourceInterface = $resourceInterface;
+    public function __construct(UserInterface $userInterface) {
+        $this->userInterface = $userInterface;
     }
+
+    public function login(Request $request)
+    {
+        return $this->userInterface->login($request);
+    }
+    
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return $this->resourceInterface->index($request);
+        return $this->userInterface->index($request);
     }
 
     /**
@@ -34,19 +40,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->resourceInterface->store($request);
+        return $this->userInterface->store($request);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $user)
+    public function show(string $uuid)
     {
-        return $this->resourceInterface->show($user);
+        return $this->userInterface->show($uuid);
     }
 
     public function search(Request $request) {
-        return $this->resourceInterface->search($request);
+        return $this->userInterface->search($request);
     }
 
     /**
@@ -60,16 +66,16 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $user)
+    public function update(Request $request, string $uuid)
     {
-        return $this->resourceInterface->update($request, $user);
+        return $this->userInterface->update($request, $uuid);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $user)
+    public function destroy(string $uuid)
     {
-        return $this->resourceInterface->destroy($user);
+        return $this->userInterface->destroy($uuid);
     }
 }

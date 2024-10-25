@@ -19,8 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             "checkToken" => CheckToken::class,
             "checkLevel" => CheckLevel::class,
-            "abilities" => CheckAbilities::class,
-            "ability" => CheckForAnyAbility::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
